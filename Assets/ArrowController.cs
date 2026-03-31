@@ -20,6 +20,11 @@ public class ArrowController : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if (this.player == null)
+        {
+            return;
+        }
+
         //충돌 판정
         Vector2 p1 = transform.position; //화살 중심 좌표
         Vector2 p2 = this.player.transform.position; //플레이어 중심 좌표
@@ -31,6 +36,10 @@ public class ArrowController : MonoBehaviour
 
         if (d < r1 + r2)
         {
+            GameObject director = GameObject.Find("GameDirector");
+            director.GetComponent<GameDirector>().DecreaseHp();
+
+            //충돌했다면 화살 소멸
             Destroy(gameObject);
         }
 

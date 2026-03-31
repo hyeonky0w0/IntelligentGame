@@ -43,8 +43,8 @@ public class YellowController : MonoBehaviour
 
         if (d < r1 + r2)
         {
-            transform.Translate(-3.0f, 0, 0, Space.World);
-            this.player.transform.Translate(3.0f, 0, 0, Space.World);
+            transform.Translate(-3.0f, 0, 0);
+            this.player.transform.Translate(3.0f, 0, 0);
         }
 
 
