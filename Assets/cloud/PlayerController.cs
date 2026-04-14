@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement; //Load Scene을 사용하는데 필요
 
 public class PlayerController : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {   
         //점프
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && this.rigid2D.linearVelocityY == 0)
         {
             this.rigid2D.AddForce(transform.up * this.jumpForce);
         }
@@ -50,5 +51,16 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (transform.position.y < -10)
+        {
+            SceneManager.LoadScene("GameScene");
+        }
+    }
+
+    //골 도착
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("골");
+        SceneManager.LoadScene("ClearScene"); //편집창 'scene'이름으로 로드
     }
 }
