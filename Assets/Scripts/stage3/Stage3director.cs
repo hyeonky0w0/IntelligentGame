@@ -122,7 +122,7 @@ public class Stage3Director : MonoBehaviour
         int score = 0;
         if (judgement == "PERFECT!") score = 100;
         else if (judgement == "GOOD") score = 50;
-        else score = -50;
+        else score = -10;
 
         ScoreManager.Instance.AddScore(score);
         UpdateScoreUI();
@@ -138,7 +138,7 @@ public class Stage3Director : MonoBehaviour
     void UpdateScoreUI()
     {
         if (this.scoreText != null)
-            this.scoreText.text = "SCORE\n" + ScoreManager.Instance.Score.ToString();
+            this.scoreText.text = ScoreManager.Instance.Score.ToString();
     }
 
     void ShowJudgement(string judgement)

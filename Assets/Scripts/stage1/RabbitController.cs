@@ -21,8 +21,8 @@ public class RabbitController : MonoBehaviour
     public float moveSpeed = 1000f;      // 이동 속도 증가
     public float startX = 600f;
     public float centerX = 0f;
-    public float idleTime = 1f;         // 서있는 시간 줄임
-    public float watchTime = 0.1f;        // 시계보는 시간 줄임
+    public float idleTime = 1f;       
+    public float watchTime = 0.1f;    
 
     [Header("Speech Bubble")]
     public GameObject speechBubble;
@@ -32,8 +32,8 @@ public class RabbitController : MonoBehaviour
     [Header("Dialogue")]
     [TextArea] public string dialogue1;
     [TextArea] public string dialogue2;
-    public float typingSpeed = 0.01f;   // 타이핑 속도
-    public float dialogueWait = 0.2f;   // 대사 사이 대기 시간
+    public float typingSpeed = 0.01f; 
+    public float dialogueWait = 0.2f; 
 
     Image rabbitImage;
     AudioSource audioSource;
@@ -65,13 +65,13 @@ public class RabbitController : MonoBehaviour
         rectTransform.sizeDelta = size;
     }
 
-    // 태그 안 깨지는 타이핑 효과
+    
     IEnumerator TypeText(string text)
     {
         dialogueText.text = text;
         dialogueText.maxVisibleCharacters = 0;
 
-        // TMP가 텍스트 파싱할 시간 한 프레임 대기
+        
         yield return null;
 
         int totalChars = dialogueText.textInfo.characterCount;

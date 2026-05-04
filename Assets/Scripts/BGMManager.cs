@@ -6,6 +6,10 @@ public class BGMManager : MonoBehaviour
     private static BGMManager instance;
     private AudioSource audioSource;
 
+    private float stageStartTime = 0f;
+    private float bgmStartOffset = 0f; // IntroScene에서 gameBGM 시작 시점|
+    private float gameStartOffset = 0f;
+
     [Header("BGM 클립")]
     public AudioClip titleBGM;    // 타이틀 + 패널 배경음악
     public AudioClip gameBGM;     // 기존 게임 BGM (Stage용)
@@ -27,31 +31,27 @@ public class BGMManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _resultTransitionEnabled = false;
         _transitioned = false;
-
         switch (scene.name)
         {
             case "Title":
                 PlayBGM(titleBGM, loop: true);
+                bgmStartOffset = 0f;
                 break;
-
             case "IntroScene":
-                // 타이틀 BGM 멈추고 게임 BGM 시작
                 PlayBGM(gameBGM, loop: true);
+                bgmStartOffset = audioSource.time;
                 break;
-
             case "Result":
-                // ResultManager가 자체 BGM 처리하므로 여기선 정지만
                 StopBGM();
                 break;
-
-                // Stage1~6은 IntroScene에서 시작한 gameBGM 계속 유지
-                // → 아무것도 안 하면 그냥 이어서 재생됨
         }
     }
+
 
     void Update()
     {
@@ -105,6 +105,29 @@ public class BGMManager : MonoBehaviour
         if (audioSource != null && audioSource.clip != null)
             return audioSource.clip.length;
         return 0f;
+    }
+
+    // Stage 진입 시 호출 - StageProgressUI가 호출함
+    public void MarkStageStart()
+    {
+        stageStartTime = audioSource.time;
+    }
+
+    // Stage 기준 경과 시간 반환
+    public float GetStageElapsedTime()
+    {
+        return audioSource.time - stageStartTime;
+    }
+    public void MarkGameStart()
+    {
+        gameStartOffset = audioSource.time;
+        Debug.Log($"GameStart offset: {gameStartOffset}");
+    }
+
+    public float GetTotalGameElapsedTime()
+    {
+        if (audioSource == null) return 0f;
+        return audioSource.time - gameStartOffset;
     }
 
     public float GetCurrentTime() => audioSource.time;

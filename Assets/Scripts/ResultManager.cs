@@ -5,17 +5,17 @@ using TMPro;
 public class ResultManager : MonoBehaviour
 {
     [Header("Result 판정 기준")]
-    public int goodThreshold = 2000;    // 2000점 이상 → GOOD
-    public int perfectThreshold = 4000; // 4000점 이상 → PERFECT
+    public int goodThreshold = 2000;    
+    public int perfectThreshold = 4000; 
 
     [Header("Result 패널 오브젝트 (Inspector에서 연결)")]
-    public GameObject perfectPanel;  // PERFECT Result UI
-    public GameObject goodPanel;     // GOOD Result UI
-    public GameObject missPanel;     // MISS Result UI
+    public GameObject perfectPanel; 
+    public GameObject goodPanel;    
+    public GameObject missPanel;    
 
     [Header("Result BGM")]
-    public AudioClip perfectBGM;     // PERFECT 전용 BGM
-    public AudioClip normalBGM;      // GOOD / MISS 공통 BGM
+    public AudioClip perfectBGM;    
+    public AudioClip normalBGM;     
 
     [Header("UI - 최종 점수 표시")]
     public TMP_Text perfectScoreText;
@@ -69,14 +69,12 @@ public class ResultManager : MonoBehaviour
         _audioSource.Play();
     }
 
-    // 버튼에 연결 - 타이틀로 돌아가기
     public void GoToTitle()
     {
         ScoreManager.Instance.ResetScore();
-        SceneManager.LoadScene("Title"); // 타이틀 씬 이름에 맞게 수정
+        SceneManager.LoadScene("Title"); 
     }
 
-    // 버튼에 연결 - 다시 하기
     public void Retry()
     {
         if (BGMManager.Instance != null)
