@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class DoughController : MonoBehaviour
 {
-    // ── 평상시 흔들림 ──
     public float swaySpeed = 1.5f;
     public float swayAngle = 12.0f;
     public float squishAmt = 0.1f;
     public float squishSpeed = 2.0f;
 
-    // ── 내부 변수 ──
     Vector3 originScale;
     bool isHit = false;
     Coroutine hitRoutine;
@@ -24,11 +22,9 @@ public class DoughController : MonoBehaviour
     {
         if (this.isHit) return;
 
-        // ── Rotation : sin 좌우 흔들림 ──
         float angle = Mathf.Sin(Time.time * this.swaySpeed) * this.swayAngle;
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
-        // ── Scaling : 젤리 출렁임 (X↔Y 반비례) ──
         float squishX = 1f + Mathf.Sin(Time.time * this.squishSpeed) * this.squishAmt;
         float squishY = 1f - Mathf.Sin(Time.time * this.squishSpeed) * this.squishAmt * 0.5f;
         transform.localScale = new Vector3(
@@ -38,9 +34,6 @@ public class DoughController : MonoBehaviour
         );
     }
 
-    // ──────────────────────────────────────────
-    // 판정 반응 (Stage3Director에서 호출)
-    // ──────────────────────────────────────────
     public void OnHit(string judgement)
     {
         if (this.hitRoutine != null) StopCoroutine(this.hitRoutine);
@@ -50,7 +43,6 @@ public class DoughController : MonoBehaviour
         else this.hitRoutine = StartCoroutine(HitEffect(0.04f, 4.0f));
     }
 
-    // Scaling(찌그러짐) + Rotation(틀어짐) 복합
     IEnumerator HitEffect(float squish, float spinDeg)
     {
         this.isHit = true;
@@ -66,13 +58,11 @@ public class DoughController : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
 
-            // Scaling : EaseOut
             float easeOut = 1f - Mathf.Pow(1f - t, 3f);
             float currentX = Mathf.Lerp(targetX, this.originScale.x, easeOut);
             float currentY = Mathf.Lerp(targetY, this.originScale.y, easeOut);
             transform.localScale = new Vector3(currentX, currentY, this.originScale.z);
 
-            // Rotation : 확 틀렸다가 복귀
             float spinT = Mathf.Sin(t * Mathf.PI);
             float currentZ = spinDeg * spinT;
             transform.rotation = Quaternion.Euler(0f, 0f, currentZ);

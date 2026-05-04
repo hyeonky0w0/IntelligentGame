@@ -37,7 +37,7 @@ public class CreamObject : MonoBehaviour
         {
             _missed = true;
             GameDirector.Instance.AddScore(-10, "MISS");
-            Destroy(gameObject); // 히트 영역만 제거, 크림 비주얼은 건드리지 않음
+            Destroy(gameObject);
         }
     }
 
@@ -46,7 +46,7 @@ public class CreamObject : MonoBehaviour
         if (_placed || _missed) return false;
 
         float dist = Vector2.Distance(clickAnchoredPos, _guidePosition);
-        if (dist > 200f) 
+        if (dist > 200f)
         {
             GameDirector.Instance.AddScore(-10, "MISS");
             return false;
@@ -58,14 +58,14 @@ public class CreamObject : MonoBehaviour
         if (diff <= perfectWindow)
         {
             _placed = true;
-            GameDirector.Instance.AddScore(50, "PERFECT!");
+            GameDirector.Instance.AddScore(100, "PERFECT!");
             SpawnCreamVisual();
             return true;
         }
         else if (diff <= goodWindow)
         {
             _placed = true;
-            GameDirector.Instance.AddScore(30, "GOOD");
+            GameDirector.Instance.AddScore(50, "GOOD");
             SpawnCreamVisual();
             return true;
         }
@@ -88,7 +88,7 @@ public class CreamObject : MonoBehaviour
                 rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
                 rt.anchoredPosition = _guidePosition;
             }
-            // SetSiblingIndex(0) 제거하고 커서 바로 아래에 배치
+
             GameObject iceBag = GameObject.Find("Cursor_IceBag");
             GameObject strawCur = GameObject.Find("Cursor_Strawberry");
 

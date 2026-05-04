@@ -4,9 +4,6 @@ using UnityEngine.UI;
 
 public class SpatulaController : MonoBehaviour
 {
-    // ===================================================================
-    // Inspector 연결
-    // ===================================================================
     [Header("Canvas UI")]
     public RectTransform spatulaRect;
     public Image spatulaImage;
@@ -15,13 +12,10 @@ public class SpatulaController : MonoBehaviour
     public RectTransform cakeRect;
 
     [Header("기울기 설정")]
-    public float tiltAngle = 15f;  // 기울어지는 각도
-    public float tiltDuration = 0.08f; // 기울어지는 시간 (초)
-    public float returnDuration = 0.12f; // 돌아오는 시간 (초)
+    public float tiltAngle = 15f;
+    public float tiltDuration = 0.08f;
+    public float returnDuration = 0.12f;
 
-    // ===================================================================
-    // 내부 상태
-    // ===================================================================
     private float startX;
     private float cakeWidth;
     private float targetX;
@@ -29,9 +23,6 @@ public class SpatulaController : MonoBehaviour
 
     private Coroutine tiltRoutine = null;
 
-    // ===================================================================
-    // Start
-    // ===================================================================
     void Start()
     {
         if (cakeRect != null)
@@ -53,18 +44,12 @@ public class SpatulaController : MonoBehaviour
         }
     }
 
-    // ===================================================================
-    // Update
-    // ===================================================================
     void Update()
     {
         UpdateSection();
         UpdatePosition();
     }
 
-    // ===================================================================
-    // 구간 완료에 따라 목표 X 갱신
-    // ===================================================================
     void UpdateSection()
     {
         if (Stage5Director.Section1Done && Stage5Director.Section1HitCount >= 2)
@@ -77,9 +62,6 @@ public class SpatulaController : MonoBehaviour
             targetX = startX + cakeWidth;
     }
 
-    // ===================================================================
-    // 부드러운 X 이동
-    // ===================================================================
     void UpdatePosition()
     {
         if (spatulaRect == null) return;
@@ -89,23 +71,16 @@ public class SpatulaController : MonoBehaviour
         spatulaRect.position = new Vector3(newX, spatulaRect.position.y, 0f);
     }
 
-    // ===================================================================
-    // 스페이스바 성공 판정 시 Stage5Director에서 호출
-    // ===================================================================
     public void OnHit()
     {
         if (tiltRoutine != null) StopCoroutine(tiltRoutine);
         tiltRoutine = StartCoroutine(TiltRoutine());
     }
 
-    // ===================================================================
-    // 기울기 코루틴: 기울어졌다가 돌아옴
-    // ===================================================================
     IEnumerator TiltRoutine()
     {
         float elapsed = 0f;
 
-        // 기울어지기
         while (elapsed < tiltDuration)
         {
             elapsed += Time.deltaTime;
@@ -118,7 +93,6 @@ public class SpatulaController : MonoBehaviour
 
         elapsed = 0f;
 
-        // 돌아오기
         while (elapsed < returnDuration)
         {
             elapsed += Time.deltaTime;

@@ -9,7 +9,7 @@ public class JumpEgg : MonoBehaviour
     public float destroyY = -700f;
 
     [Header("사운드")]
-    public AudioClip hitSound;       
+    public AudioClip hitSound;
     private AudioSource _audioSource;
 
     [Header("판정 윈도우")]
@@ -19,7 +19,7 @@ public class JumpEgg : MonoBehaviour
     private float _hitTime;
     private BGMManager _bgm;
     private RectTransform _rect;
-    private Image _image;          
+    private Image _image;
 
     private bool _isVisible = false;
     private bool _isFalling = false;
@@ -33,9 +33,6 @@ public class JumpEgg : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
 
         SetVisible(false);
-
-        Debug.Log("AudioSource: " + _audioSource);
-        Debug.Log("HitSound: " + hitSound);
     }
 
     public void Init(float hitTime, BGMManager bgm)
@@ -67,13 +64,13 @@ public class JumpEgg : MonoBehaviour
 
         if (diff <= perfectWindow)
         {
-            GameDirector.Instance.AddScore(50, "PERFECT!");
-            PlaySound(hitSound);    // Perfect일 때 재생
+            GameDirector.Instance.AddScore(100, "PERFECT!");
+            PlaySound(hitSound);
         }
         else if (diff <= goodWindow)
         {
-            GameDirector.Instance.AddScore(30, "GOOD");
-            PlaySound(hitSound);    // Good일 때도 같은 사운드
+            GameDirector.Instance.AddScore(50, "GOOD");
+            PlaySound(hitSound);
         }
         else
         {
@@ -87,7 +84,6 @@ public class JumpEgg : MonoBehaviour
 
     void PlaySound(AudioClip clip)
     {
-        Debug.Log($"PlaySound 호출됨 / clip={clip} / audioSource={_audioSource}");
         if (clip == null || _audioSource == null) return;
         _audioSource.PlayOneShot(clip);
     }
@@ -114,5 +110,4 @@ public class JumpEgg : MonoBehaviour
         _isVisible = visible;
         if (_image != null) _image.enabled = visible;
     }
-
 }

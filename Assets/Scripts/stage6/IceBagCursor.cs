@@ -1,4 +1,3 @@
-// IceBagCursor.cs
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -33,12 +32,11 @@ public class IceBagCursor : MonoBehaviour
         _image.sprite = iceBag1;
 
         transform.SetAsLastSibling();
-
     }
 
     void Update()
     {
-        transform.SetAsLastSibling(); // ← 매 프레임 최상단 유지
+        transform.SetAsLastSibling();
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
 
@@ -60,7 +58,7 @@ public class IceBagCursor : MonoBehaviour
             if (_audioSource != null && placeSound != null)
                 _audioSource.PlayOneShot(placeSound);
 
-            TryCream(localPoint); // ← 클릭한 anchoredPosition 전달
+            TryCream(localPoint);
         }
     }
 
@@ -90,7 +88,7 @@ public class IceBagCursor : MonoBehaviour
 
             if (cream != null)
             {
-                cream.TryPlace(clickAnchoredPos); // ← 위치 넘겨줌
+                cream.TryPlace(clickAnchoredPos);
                 break;
             }
         }

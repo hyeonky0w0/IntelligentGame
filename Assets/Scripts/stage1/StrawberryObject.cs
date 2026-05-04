@@ -17,7 +17,7 @@ public class StrawberryObject : MonoBehaviour
     private bool _isMissed = false;
 
     public float hitWindow = 0.5f;
-    public float perfectWindow = 0.1f; // Perfect 판정 범위
+    public float perfectWindow = 0.1f;
 
     public void Init(float hitTime, float lastHitTime, BGMManager bgm)
     {
@@ -43,14 +43,12 @@ public class StrawberryObject : MonoBehaviour
             if (topObj != null) topObj.SetActive(true);
         }
 
-       
         if (!_isMissed && _bodyShown && current > _hitTime + hitWindow)
         {
             _isMissed = true;
             GameDirector.Instance.AddScore(-10, "MISS");
         }
 
-       
         if (current > _lastHitTime + hitWindow + 0.5f)
             Destroy(gameObject);
     }
@@ -73,14 +71,14 @@ public class StrawberryObject : MonoBehaviour
         if (diff <= perfectWindow)
         {
             _isSliced = true;
-            GameDirector.Instance.AddScore(50, "PERFECT!");
+            GameDirector.Instance.AddScore(100, "PERFECT!");
             StartCoroutine(SliceAnimation());
             return true;
         }
         else if (diff <= hitWindow)
         {
             _isSliced = true;
-            GameDirector.Instance.AddScore(30, "GOOD");
+            GameDirector.Instance.AddScore(50, "GOOD");
             StartCoroutine(SliceAnimation());
             return true;
         }

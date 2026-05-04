@@ -9,8 +9,8 @@ public class StrawberryHitObject : MonoBehaviour
     private bool _placed = false;
     private bool _missed = false;
 
-    public float perfectWindow = 0.3f;   // ±300ms
-    public float goodWindow = 0.5f;   // ±500ms
+    public float perfectWindow = 0.3f;
+    public float goodWindow = 0.5f;
     public float missWindow = 0.7f;
 
     private GameObject _strawberryPrefab;
@@ -29,8 +29,6 @@ public class StrawberryHitObject : MonoBehaviour
         _strawberryPrefab = strawberryPrefab;
         _canvasTransform = canvasTransform;
         _placedSize = placedSize;
-
-        Debug.Log($"[StrawberryHit] Init 완료 - hitTime: {hitTime:F3}s / guidePos: {guidePos}");
     }
 
     void Update()
@@ -41,7 +39,6 @@ public class StrawberryHitObject : MonoBehaviour
         if (!_missed && current > _hitTime + missWindow)
         {
             _missed = true;
-            Debug.Log($"[StrawberryHit] MISS (시간 초과) - hitTime: {_hitTime:F3} / current: {current:F3}");
             GameDirector.Instance.AddScore(-10, "MISS");
             Destroy(gameObject);
         }
@@ -49,43 +46,33 @@ public class StrawberryHitObject : MonoBehaviour
 
     public bool TryPlace(Vector2 clickAnchoredPos)
     {
-        if (_placed || _missed)
-        {
-            Debug.Log($"[StrawberryHit] TryPlace 무시 - placed:{_placed} missed:{_missed}");
-            return false;
-        }
+        if (_placed || _missed) return false;
 
         float dist = Vector2.Distance(clickAnchoredPos, _guidePosition);
         float current = _bgm.GetCurrentTime();
         float diff = Mathf.Abs(current - _hitTime);
 
-        Debug.Log($"[StrawberryHit] 클릭 감지 - dist:{dist:F1}px / diff:{diff * 1000:F0}ms / hitTime:{_hitTime:F3} / current:{current:F3}");
-
         if (dist > 200f)
         {
-            Debug.Log($"[StrawberryHit] 위치 실패 - dist:{dist:F1} > 120px");
             GameDirector.Instance.AddScore(-10, "MISS");
             return false;
         }
 
         if (diff <= perfectWindow)
         {
-            Debug.Log($"[StrawberryHit] PERFECT! dist:{dist:F1}px / diff:{diff * 1000:F0}ms");
             _placed = true;
-            GameDirector.Instance.AddScore(50, "PERFECT!");
+            GameDirector.Instance.AddScore(100, "PERFECT!");
             SpawnStrawberryVisual();
             return true;
         }
         else if (diff <= goodWindow)
         {
-            Debug.Log($"[StrawberryHit] GOOD dist:{dist:F1}px / diff:{diff * 1000:F0}ms");
             _placed = true;
-            GameDirector.Instance.AddScore(30, "GOOD");
+            GameDirector.Instance.AddScore(50, "GOOD");
             SpawnStrawberryVisual();
             return true;
         }
 
-        Debug.Log($"[StrawberryHit] 타이밍 실패 - diff:{diff * 1000:F0}ms > {goodWindow * 1000:F0}ms");
         GameDirector.Instance.AddScore(-10, "MISS");
         return false;
     }
@@ -95,11 +82,7 @@ public class StrawberryHitObject : MonoBehaviour
         if (_linkedGuide != null)
             _linkedGuide.OnCreamPlaced();
 
-        if (_strawberryPrefab == null)
-        {
-            Debug.LogError("[StrawberryHit] strawberryPrefab이 null!");
-            return;
-        }
+        if (_strawberryPrefab == null) return;
 
         GameObject straw = Instantiate(_strawberryPrefab, _canvasTransform);
         RectTransform rt = straw.GetComponent<RectTransform>();
@@ -110,7 +93,6 @@ public class StrawberryHitObject : MonoBehaviour
             rt.sizeDelta = new Vector2(_placedSize, _placedSize);
         }
 
-        // 커서 바로 아래에 배치
         GameObject iceBag = GameObject.Find("Cursor_IceBag");
         GameObject strawCur = GameObject.Find("Cursor_Strawberry");
 
@@ -121,7 +103,6 @@ public class StrawberryHitObject : MonoBehaviour
         if (cursorIndex != int.MaxValue)
             straw.transform.SetSiblingIndex(cursorIndex - 1);
 
-        Debug.Log($"[StrawberryHit] 딸기 배치 성공! pos:{_guidePosition} siblingIndex:{straw.transform.GetSiblingIndex()}");
         Destroy(gameObject);
     }
 }

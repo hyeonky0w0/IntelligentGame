@@ -7,12 +7,12 @@ public class BGMManager : MonoBehaviour
     private AudioSource audioSource;
 
     private float stageStartTime = 0f;
-    private float bgmStartOffset = 0f; // IntroScene에서 gameBGM 시작 시점|
+    private float bgmStartOffset = 0f;
     private float gameStartOffset = 0f;
 
     [Header("BGM 클립")]
-    public AudioClip titleBGM;    // 타이틀 + 패널 배경음악
-    public AudioClip gameBGM;     // 기존 게임 BGM (Stage용)
+    public AudioClip titleBGM;
+    public AudioClip gameBGM;
 
     private bool _resultTransitionEnabled = false;
     private bool _transitioned = false;
@@ -27,10 +27,8 @@ public class BGMManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         audioSource = GetComponent<AudioSource>();
-
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -52,7 +50,6 @@ public class BGMManager : MonoBehaviour
         }
     }
 
-
     void Update()
     {
         if (_resultTransitionEnabled && !_transitioned && audioSource != null)
@@ -68,8 +65,6 @@ public class BGMManager : MonoBehaviour
     void PlayBGM(AudioClip clip, bool loop = true)
     {
         if (clip == null || audioSource == null) return;
-
-        // 이미 같은 클립 재생 중이면 중복 재시작 방지
         if (audioSource.clip == clip && audioSource.isPlaying) return;
 
         audioSource.Stop();
@@ -107,21 +102,19 @@ public class BGMManager : MonoBehaviour
         return 0f;
     }
 
-    // Stage 진입 시 호출 - StageProgressUI가 호출함
     public void MarkStageStart()
     {
         stageStartTime = audioSource.time;
     }
 
-    // Stage 기준 경과 시간 반환
     public float GetStageElapsedTime()
     {
         return audioSource.time - stageStartTime;
     }
+
     public void MarkGameStart()
     {
         gameStartOffset = audioSource.time;
-        Debug.Log($"GameStart offset: {gameStartOffset}");
     }
 
     public float GetTotalGameElapsedTime()

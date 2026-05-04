@@ -19,12 +19,12 @@ public class GameDirector : MonoBehaviour
 
     void Start()
     {
-        UpdateScoreUI(); // ScoreManager에서 점수 이어받기
+        UpdateScoreUI();
     }
 
     public void AddScore(int amount, string judgement)
     {
-        ScoreManager.Instance.AddScore(amount); // ScoreManager에 저장
+        ScoreManager.Instance.AddScore(amount);
         UpdateScoreUI();
         ShowJudgement(judgement);
     }

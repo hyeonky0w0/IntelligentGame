@@ -1,4 +1,3 @@
-// GuideLight.cs
 using UnityEngine;
 
 public class GuideLight : MonoBehaviour
@@ -20,7 +19,6 @@ public class GuideLight : MonoBehaviour
         if (_bgm == null || _expired) return;
         float current = _bgm.GetCurrentTime();
 
-        // 크림 판정 시간 + 여유 지나면 제거
         if (current > _linkedCreamTime + 0.3f)
         {
             _expired = true;
@@ -28,7 +26,6 @@ public class GuideLight : MonoBehaviour
         }
     }
 
-    // 크림이 성공적으로 놓이면 외부에서 호출
     public void OnCreamPlaced()
     {
         _expired = true;

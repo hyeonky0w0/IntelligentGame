@@ -1,4 +1,3 @@
-// Stage6Spawner.cs
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -66,7 +65,6 @@ public class Stage6Spawner : MonoBehaviour
         if (_bgm == null) return;
         float current = _bgm.GetCurrentTime();
 
-        // 커서 전환
         if (!_cursorSwitched && current >= _cursorSwitchTime)
         {
             _cursorSwitched = true;
@@ -78,7 +76,6 @@ public class Stage6Spawner : MonoBehaviour
             }
         }
 
-        // 크림 가이드 스폰
         while (_creamGuideIndex < _creamGuideTimes.Length &&
                current >= _creamGuideTimes[_creamGuideIndex])
         {
@@ -88,7 +85,6 @@ public class Stage6Spawner : MonoBehaviour
             _creamGuideIndex++;
         }
 
-        // 크림 히트 스폰
         while (_creamHitIndex < _creamHitTimes.Length &&
                current >= _creamHitTimes[_creamHitIndex] - 1.0f)
         {
@@ -96,7 +92,6 @@ public class Stage6Spawner : MonoBehaviour
             _creamHitIndex++;
         }
 
-        // 딸기 가이드 스폰
         while (_strawGuideIndex < _strawGuideTimes.Length &&
                current >= _strawGuideTimes[_strawGuideIndex])
         {
@@ -106,7 +101,6 @@ public class Stage6Spawner : MonoBehaviour
             _strawGuideIndex++;
         }
 
-        // 딸기 히트 스폰
         while (_strawHitIndex < _strawHitTimes.Length &&
                current >= _strawHitTimes[_strawHitIndex] - 1.0f)
         {
@@ -132,7 +126,6 @@ public class Stage6Spawner : MonoBehaviour
             rt.anchoredPosition = pos;
         }
 
-        // 커서보다 뒤에 배치
         GameObject iceBag = GameObject.Find("Cursor_IceBag");
         GameObject strawCur = GameObject.Find("Cursor_Strawberry");
 
