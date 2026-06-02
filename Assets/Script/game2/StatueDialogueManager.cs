@@ -30,18 +30,16 @@ public class StatueDialogueManager : MonoBehaviour
 
     [Header("씬 이름")]
     public string miniGameSceneName = "MiniGame2Scene";
-    public string resultSceneName = "EndingScene";   // ← 엔딩 씬 이름
+    public string resultSceneName = "EndingScene";
 
-    // ────────────────────────────────────────
     [Header("셔터 설정 (성공 시 올라감)")]
     public List<GameObject> shutterDoors = new List<GameObject>();
     public float shutterRiseHeight = 10f;
     public float shutterRiseDuration = 3f;
 
     [Header("페이드 설정")]
-    public Image fadeImage;        // 전체화면 검정 Image (alpha 0으로 시작)
+    public Image fadeImage;      
     public float fadeDuration = 1.5f;
-    // ────────────────────────────────────────
 
     [System.Serializable]
     public class DialogueLine
@@ -72,7 +70,6 @@ public class StatueDialogueManager : MonoBehaviour
         if (continueHintText != null)
             continueHintText.gameObject.SetActive(false);
 
-        // 페이드 이미지 투명 초기화
         if (fadeImage != null)
         {
             Color c = fadeImage.color;
@@ -102,10 +99,9 @@ public class StatueDialogueManager : MonoBehaviour
         }
     }
 
-    // ── 성공 시퀀스: 셔터 올리기 → 성공 패널 → 페이드 아웃 → ResultScene ──
     IEnumerator SuccessSequence()
     {
-        // 1) 셔터 동시에 올리기
+
         foreach (GameObject door in shutterDoors)
         {
             if (door != null)
@@ -116,7 +112,6 @@ public class StatueDialogueManager : MonoBehaviour
             }
         }
 
-        // 2) 성공 패널 표시
         if (successPanel != null)
         {
             yield return new WaitForSeconds(0.5f);
@@ -131,13 +126,11 @@ public class StatueDialogueManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
-        // 3) 페이드 아웃 → ResultScene 전환
         yield return StartCoroutine(FadeAndLoad());
     }
 
     IEnumerator FadeAndLoad()
     {
-        // 페이드 이미지가 없으면 바로 씬 전환
         if (fadeImage == null)
         {
             SceneManager.LoadScene(resultSceneName);
@@ -173,7 +166,7 @@ public class StatueDialogueManager : MonoBehaviour
         door.transform.position = endPos;
     }
 
-    // ── 이하 기존 코드 그대로 ──────────────────────────────────────────────
+    
 
     void Update()
     {
@@ -201,11 +194,9 @@ public class StatueDialogueManager : MonoBehaviour
         Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         if (!Physics.Raycast(ray, out RaycastHit hit, interactRange)) return;
 
-        Debug.Log($"[Dialogue] 정중앙 Raycast 히트: {hit.collider.gameObject.name}");
 
         if (IsStatue(hit.collider.gameObject))
         {
-            Debug.Log("[Dialogue] ✅ 반가사유상 감지 → 대화 시작");
             StartDialogue();
         }
     }
@@ -219,12 +210,8 @@ public class StatueDialogueManager : MonoBehaviour
 
     void CheckStatueCollider(GameObject statue, string label)
     {
-        if (statue == null) { Debug.LogError($"[Dialogue] ❌ {label} 슬롯 비어있음"); return; }
+        if (statue == null) {  return; }
         Collider[] cols = statue.GetComponentsInChildren<Collider>();
-        if (cols.Length == 0)
-            Debug.LogError($"[Dialogue] ❌ {label}({statue.name}) Collider 없음 → Box Collider 추가하세요");
-        else
-            Debug.Log($"[Dialogue] ✅ {label}({statue.name}) Collider {cols.Length}개 확인");
     }
 
     void StartDialogue()

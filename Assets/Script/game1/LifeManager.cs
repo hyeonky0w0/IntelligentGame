@@ -26,7 +26,6 @@ public class LifeManager : MonoBehaviour
     public void LoseLife()
     {
         _currentLives--;
-        Debug.Log($"[LifeManager] 남은 목숨: {_currentLives}");
         MiniGameUIManager.Instance?.UpdateHearts(_currentLives);
 
         if (_currentLives <= 0)

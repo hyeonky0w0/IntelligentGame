@@ -29,7 +29,6 @@ public class BuddhistHallReturn : MonoBehaviour
     {
         if (successBanner != null) successBanner.SetActive(false);
 
-        // 플레이어 위치 복원
         if (playerTransform != null && PlayerPrefs.HasKey("PlayerX"))
         {
             float x = PlayerPrefs.GetFloat("PlayerX");
@@ -44,7 +43,6 @@ public class BuddhistHallReturn : MonoBehaviour
             PlayerPrefs.DeleteKey("PlayerZ");
         }
 
-        // 읽자마자 즉시 삭제 — 씬 재진입 시 중복 실행 방지
         int success = PlayerPrefs.GetInt("MinigameSuccess", 0);
         PlayerPrefs.DeleteKey("MinigameSuccess");
         PlayerPrefs.Save();

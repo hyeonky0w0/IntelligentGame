@@ -30,7 +30,6 @@ public class BasketController2 : MonoBehaviour
     {
         mainCam = Camera.main;
 
-        // deprecated 경고 수정
         if (director == null)
             director = FindFirstObjectByType<MiniGame2Director>();
 
@@ -42,14 +41,8 @@ public class BasketController2 : MonoBehaviour
         transform.position = targetPosition;
 
         Collider myCol = GetComponent<Collider>();
-        if (myCol == null)
-            Debug.LogError("[Basket] ❌ Collider 없음!");
-        else if (!myCol.isTrigger)
-            Debug.LogError("[Basket] ❌ Is Trigger 꺼져있음!");
 
         Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb == null)
-            Debug.LogWarning("[Basket] ⚠️ Rigidbody 없음 → Add Rigidbody + Is Kinematic ON");
     }
 
     void Update()

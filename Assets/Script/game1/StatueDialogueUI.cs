@@ -16,8 +16,6 @@ public class StatueDialogueUI : MonoBehaviour
     void Awake()
     {
         _panel = gameObject;
-
-        // 시작하자마자 패널 전체 숨김
         _panel.SetActive(false);
     }
 

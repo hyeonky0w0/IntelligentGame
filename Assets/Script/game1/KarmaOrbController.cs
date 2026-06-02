@@ -26,14 +26,11 @@ public class KarmaOrbController : MonoBehaviour
     {
         if (_resolved) return;
 
-        Debug.Log($"[KarmaOrb] 충돌: {other.gameObject.name} / Tag: {other.gameObject.tag}");
 
         if (other.gameObject.CompareTag("Ground"))
         {
             _resolved = true;
-            Debug.Log("[KarmaOrb] Ground 충돌 → LoseLife 호출");
 
-            // Instance 없으면 자동 생성
             LifeManager.GetOrCreate().LoseLife();
 
             if (damageSFX != null)
@@ -47,8 +44,6 @@ public class KarmaOrbController : MonoBehaviour
         if (_resolved) return;
         _resolved = true;
         _rb.isKinematic = true;
-
-        Debug.Log("[KarmaOrb] Deflect — 격파");
 
         if (hitParticle != null)
         {
@@ -66,7 +61,6 @@ public class KarmaOrbController : MonoBehaviour
     {
         if (_resolved) return;
         _resolved = true;
-        Debug.Log("[KarmaOrb] 화면 밖 이탈 → LoseLife 호출");
         LifeManager.GetOrCreate().LoseLife();
         Destroy(gameObject);
     }

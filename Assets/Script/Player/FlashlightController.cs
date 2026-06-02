@@ -3,9 +3,9 @@ using UnityEngine;
 public class FlashlightController : MonoBehaviour
 {
     [Header("손전등 설정")]
-    public Light spotlight;          // 자식의 Light 컴포넌트 연결
-    public AudioSource clickSound;   // 켜기/끄기 소리
-    public Animator handAnimator;    // 손 애니메이터
+    public Light spotlight;          
+    public AudioSource clickSound;  
+    public Animator handAnimator;  
 
     [Header("화면 위치 (카메라 기준 로컬)")]
     public Vector3 restPosition = new Vector3(0.25f, -0.25f, 0.4f);
@@ -30,7 +30,6 @@ public class FlashlightController : MonoBehaviour
         HandleAnimation();
     }
 
-    // F키로 손전등 ON/OFF
     void HandleToggle()
     {
         if (!Input.GetKeyDown(KeyCode.F)) return;
@@ -41,7 +40,6 @@ public class FlashlightController : MonoBehaviour
         if (handAnimator) handAnimator.SetTrigger("on-off");
     }
 
-    // 걸을 때 손 흔들림 (bob)
     void HandleSway()
     {
         _walking = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)
@@ -51,7 +49,7 @@ public class FlashlightController : MonoBehaviour
         {
             _swayTime += Time.deltaTime * swaySpeed;
             float bobX = Mathf.Sin(_swayTime) * walkOffset.x;
-            float bobY = Mathf.Sin(_swayTime * 2f) * walkOffset.y; // Y는 2배 빠르게
+            float bobY = Mathf.Sin(_swayTime * 2f) * walkOffset.y; 
             transform.localPosition = Vector3.Lerp(
                 transform.localPosition,
                 _basePos + new Vector3(bobX, bobY, 0f),

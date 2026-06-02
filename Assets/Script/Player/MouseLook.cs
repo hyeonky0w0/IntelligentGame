@@ -16,7 +16,6 @@ public class MouseLook : MonoBehaviour
     Vector2 currentDelta;
     Vector2 smoothVelocity;
 
-    // 대화 중 마우스 잠금 해제 여부
     bool _cursorFree = false;
 
     void Start()
@@ -26,20 +25,16 @@ public class MouseLook : MonoBehaviour
         xRotation = 0f;
         yRotation = playerBody.eulerAngles.y;
 
-        // FreeCursor() 제거 — IntroPanel이 직접 호출하므로 여기선 필요 없음
-        // 기본은 잠금 상태로 시작, IntroPanel이 열리면 FreeCursor 호출됨
         LockCursor();
     }
     void Update()
     {
-        // ── 커서 잠금 토글 (ESC 키) ──
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (_cursorFree) LockCursor();
             else FreeCursor();
         }
 
-        // 커서가 풀려있으면 카메라 회전 안 함
         if (_cursorFree) return;
 
         Vector2 targetDelta = new Vector2(
@@ -59,8 +54,6 @@ public class MouseLook : MonoBehaviour
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         playerBody.localRotation = Quaternion.Euler(0f, yRotation, 0f);
     }
-
-    /// <summary>마우스 화면 중앙 고정 + 숨김 (게임 중)</summary>
     public void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -68,7 +61,6 @@ public class MouseLook : MonoBehaviour
         _cursorFree = false;
     }
 
-    /// <summary>마우스 잠금 해제 + 표시 (대화/UI)</summary>
     public void FreeCursor()
     {
         Cursor.lockState = CursorLockMode.None;

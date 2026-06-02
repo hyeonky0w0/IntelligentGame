@@ -35,7 +35,7 @@ public class MiniGameUIManager : MonoBehaviour
     [Header("결과 문구")]
     public string successMain = "시련을 견뎌냈다";
     public string successSub = "석상이 길을 열어준다…";
-    public string failMain = "심등(心燈)이 꺼졌다";
+    public string failMain = "심등이 꺼졌다";
     public string failSub = "경비원은 어둠에 삼켜졌다.";
 
     void Awake()
@@ -46,8 +46,6 @@ public class MiniGameUIManager : MonoBehaviour
         resultPanel?.SetActive(false);
         _deflectCount = 0;
         if (deflectText != null) deflectText.text = "격파: 0";
-
-        // LifeManager보다 늦게 초기화될 수 있으니 Start에서도 갱신
     }
 
     void Start()
@@ -55,7 +53,6 @@ public class MiniGameUIManager : MonoBehaviour
         int lives = LifeManager.Instance != null ? LifeManager.Instance.CurrentLives : 3;
         UpdateHearts(lives);
 
-        // 다시하기 버튼 초기화
         if (retryButton != null)
         {
             retryButton.gameObject.SetActive(false);
@@ -71,7 +68,6 @@ public class MiniGameUIManager : MonoBehaviour
     }
 
 
-    // ── 하트 ──────────────────────────────────
     public void UpdateHearts(int remaining)
     {
         for (int i = 0; i < heartImages.Length; i++)
@@ -82,26 +78,22 @@ public class MiniGameUIManager : MonoBehaviour
 
             if (heartFull != null && heartEmpty != null)
             {
-                // 스프라이트가 연결된 경우
                 heartImages[i].sprite = alive ? heartFull : heartEmpty;
                 heartImages[i].color = Color.white;
             }
             else
             {
-                // 스프라이트 없을 때: Color로 대체
                 heartImages[i].color = alive ? heartOnColor : heartOffColor;
             }
         }
     }
-
-    // ── 웨이브 ────────────────────────────────
+    
     public void UpdateWave(int current, int total)
     {
         if (waveText != null)
             waveText.text = $"웨이브 {current} / {total}";
     }
 
-    // ── 격파 카운트 ───────────────────────────
     public void AddDeflectCount()
     {
         _deflectCount++;
@@ -109,7 +101,6 @@ public class MiniGameUIManager : MonoBehaviour
             deflectText.text = $"격파: {_deflectCount}";
     }
 
-    // ── 결과 패널 ─────────────────────────────
     public void ShowResult(bool success)
     {
         resultPanel?.SetActive(true);

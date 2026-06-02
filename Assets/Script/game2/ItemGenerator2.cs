@@ -28,14 +28,10 @@ public class ItemGenerator2 : MonoBehaviour
     private int bonraeRatio = 2;
     private float delta = 0f;
 
-    // 외부에서 생성 on/off 제어
     private bool active = false;
 
     private List<Vector3> cellCenters = new List<Vector3>();
 
-    // ───────────────────────────────
-    // Director에서 호출
-    // ───────────────────────────────
     public void SetParameter(float span, float speed, int bonraeRatio)
     {
         this.span = span;
@@ -43,30 +39,27 @@ public class ItemGenerator2 : MonoBehaviour
         this.bonraeRatio = bonraeRatio;
     }
 
-    /// <summary>튜토리얼 끝나면 Director가 호출 → 생성 시작</summary>
     public void StartSpawning()
     {
         active = true;
-        delta = 0f;  // 첫 아이템이 즉시 나오지 않도록 리셋
+        delta = 0f; 
     }
 
-    /// <summary>게임 종료 시 Director가 호출 → 생성 중단</summary>
     public void StopSpawning()
     {
         active = false;
     }
 
-    // ───────────────────────────────
     void Start()
     {
         BuildCellCenters();
         Debug.Log($"[ItemGenerator] 칸 수={cellCenters.Count}, 첫 칸={cellCenters[0]}, 마지막 칸={cellCenters[cellCenters.Count - 1]}");
-        // 튜토리얼 중에는 생성 안 함 — StartSpawning() 호출 전까지 대기
+
     }
 
     void Update()
     {
-        if (!active) return;  // 생성 비활성 상태면 무시
+        if (!active) return; 
 
         delta += Time.deltaTime;
         if (delta < span) return;

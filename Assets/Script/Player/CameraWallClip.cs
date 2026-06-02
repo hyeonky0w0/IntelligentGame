@@ -31,13 +31,11 @@ public class CameraWallClip : MonoBehaviour
         if (Physics.SphereCast(origin, 0.2f, dir.normalized,
                                out RaycastHit hit, dist, wallLayer))
         {
-            // 벽에 닿으면 카메라를 벽 바로 앞으로 당김
             float safeDist = Mathf.Max(hit.distance - 0.15f, 0.05f);
             transform.position = origin + dir.normalized * safeDist;
         }
         else
         {
-            // 정상 위치 복원
             transform.localPosition = Vector3.Lerp(
                 transform.localPosition,
                 defaultLocalPos,

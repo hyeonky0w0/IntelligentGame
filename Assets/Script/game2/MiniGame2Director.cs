@@ -41,7 +41,7 @@ public class MiniGame2Director : MonoBehaviour
     private ItemGenerator2 generator;
     private Coroutine flashCoroutine;
 
-    // ───────────────────────────────
+
     public void GetEnlightenment()
     {
         if (gameOver || !gameStarted) return;
@@ -62,16 +62,13 @@ public class MiniGame2Director : MonoBehaviour
         flashCoroutine = StartCoroutine(FlashRed());
     }
 
-    // ───────────────────────────────
     void Start()
     {
         generator = FindFirstObjectByType<ItemGenerator2>();
 
-        // 마우스 커서 표시
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        // UI 초기화
         resultPanel.SetActive(false);
         if (retryButton != null)
         {
@@ -95,21 +92,18 @@ public class MiniGame2Director : MonoBehaviour
             enlightenmentGauge.value = 0;
         }
 
-        // 튜토리얼 → 일정 시간 후 자동 시작
         float duration = PlayerPrefs.GetFloat("TutorialDuration", tutorialDuration);
         PlayerPrefs.DeleteKey("TutorialDuration");
         StartCoroutine(TutorialThenStart(duration));
     }
 
-    // ───────────────────────────────
-    // 튜토리얼 표시 → 시간 지나면 자동으로 게임 시작
-    // ───────────────────────────────
+
     IEnumerator TutorialThenStart(float duration)
     {
         if (tutorialPanel != null)
         {
             tutorialPanel.SetActive(true);
-            yield return new WaitForSecondsRealtime(duration); // timeScale 영향 안 받음
+            yield return new WaitForSecondsRealtime(duration);
             tutorialPanel.SetActive(false);
         }
 
@@ -120,7 +114,6 @@ public class MiniGame2Director : MonoBehaviour
     {
         gameStarted = true;
 
-        // 튜토리얼 끝났으니 아이템 생성 시작
         if (generator != null) generator.StartSpawning();
 
         if (bgmSource != null && bgmClip != null)
@@ -131,7 +124,6 @@ public class MiniGame2Director : MonoBehaviour
         }
     }
 
-    // ───────────────────────────────
     void Update()
     {
         if (gameOver || !gameStarted) return;
@@ -152,7 +144,6 @@ public class MiniGame2Director : MonoBehaviour
         else generator.SetParameter(1.2f, -0.03f, 2);
     }
 
-    // ───────────────────────────────
     void UpdateTimerUI()
     {
         if (timerText == null) return;

@@ -48,15 +48,14 @@ public class OrbSpawner : MonoBehaviour
     public float throwTiltAngle = 20f;
     public float throwTiltDuration = 0.2f;
 
-    // ── 내부 상태 ──
+    
     int _currentWave;
     bool _gameRunning;
     float _currentInterval;
     float _currentSpeed;
     Quaternion _statueOriginalRot;
 
-    // ── 석상 발(foot) 위치 캐싱 ──
-    // 석상 피벗이 중심점이면 실제 발 Y를 직접 지정할 수 있도록
+
     [Header("── 석상 발 보정 ─────────────────")]
     [Tooltip("true면 statueFootY를 직접 사용. false면 statueTransform.position.y 사용.")]
     public bool overrideStatueFootY = false;
@@ -80,7 +79,7 @@ public class OrbSpawner : MonoBehaviour
         StartCoroutine(WaveLoop());
     }
 
-    void Start() // Start에서 하던 초기화는 Awake로 이동했으므로 제거 또는 Cursor 설정만 남김
+    void Start()
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
@@ -88,7 +87,6 @@ public class OrbSpawner : MonoBehaviour
 
     IEnumerator WaveLoop()
     {
-        // ✅ Start()가 먼저 실행되도록 한 프레임 대기
         yield return null;
 
         while (_currentWave < totalWaves)
@@ -102,7 +100,7 @@ public class OrbSpawner : MonoBehaviour
                 if (!_gameRunning) yield break;
                 float before = Time.time;
                 yield return StartCoroutine(ThrowOrb());
-                elapsed += Time.time - before; // ✅ 실제 경과 시간으로 측정
+                elapsed += Time.time - before;
             }
 
             _currentInterval = Mathf.Max(0.4f, _currentInterval - intervalDecay);
@@ -115,15 +113,12 @@ public class OrbSpawner : MonoBehaviour
     }
 
     IEnumerator ThrowOrb()
-    {
-        // ✅ throwTiltDuration이 너무 작으면 최소값 보장
+    {      
         float tiltDur = Mathf.Max(throwTiltDuration, 0.05f);
 
-        // 1) 석상 기울기
         if (statueTransform != null)
         {
             Vector3 toPlayer = (playerTransform.position - statueTransform.position).normalized;
-            // ✅ toPlayer가 zero벡터일 경우 방어
             if (toPlayer == Vector3.zero) toPlayer = statueTransform.forward;
 
             Quaternion tiltRot = Quaternion.LookRotation(toPlayer) *
@@ -136,14 +131,12 @@ public class OrbSpawner : MonoBehaviour
                     _statueOriginalRot, tiltRot, t / tiltDur);
                 yield return null;
             }
-            statueTransform.rotation = tiltRot; // ✅ 정확히 목표 회전으로 고정
+            statueTransform.rotation = tiltRot; 
         }
 
-        // 2) 이펙트 + 오브 생성
         PlayThrowEffect();
         SpawnOrb();
 
-        // 3) 석상 복귀
         if (statueTransform != null)
         {
             float t = 0f;
@@ -158,16 +151,11 @@ public class OrbSpawner : MonoBehaviour
             statueTransform.rotation = _statueOriginalRot;
         }
 
-        // ✅ 남은 대기시간이 양수일 때만 대기
         float waitTime = _currentInterval - tiltDur * 2f;
         if (waitTime > 0f)
             yield return new WaitForSeconds(waitTime);
     }
 
-    /// <summary>
-    /// 던지기 이펙트를 석상 위치에 생성하고 일정 시간 후 자동 제거합니다.
-    /// Inspector에서 throwEffectPrefab을 연결하지 않으면 조용히 스킵됩니다.
-    /// </summary>
     void PlayThrowEffect()
     {
         if (throwEffectPrefab == null || statueTransform == null) return;
@@ -178,7 +166,6 @@ public class OrbSpawner : MonoBehaviour
         GameObject fx = Instantiate(throwEffectPrefab, effectPos,
                                     statueTransform.rotation);
 
-        // 파티클 시스템이 있으면 한 번만 재생
         ParticleSystem ps = fx.GetComponent<ParticleSystem>();
         if (ps != null)
         {
@@ -189,11 +176,6 @@ public class OrbSpawner : MonoBehaviour
         Destroy(fx, effectLifetime);
     }
 
-    /// <summary>
-    /// 오브를 생성하고 발사합니다.
-    /// overrideStatueFootY가 true이면 석상 피벗 오프셋을 무시하고
-    /// statueFootY + spawnHeightOffset 위치에서 발사합니다.
-    /// </summary>
     void SpawnOrb()
     {
         if (orbPrefab == null || statueTransform == null || playerTransform == null)
@@ -202,10 +184,9 @@ public class OrbSpawner : MonoBehaviour
             return;
         }
 
-        // ── 발사 위치 계산 (불상 떠있음 버그 보정) ──
         Vector3 basePos = statueTransform.position;
         if (overrideStatueFootY)
-            basePos.y = statueFootY;   // 피벗 오프셋 무시, 발 기준 사용
+            basePos.y = statueFootY;  
 
         Vector3 spawnPos = basePos + Vector3.up * spawnHeightOffset;
 

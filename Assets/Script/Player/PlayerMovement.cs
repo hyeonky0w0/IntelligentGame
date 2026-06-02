@@ -10,8 +10,8 @@ public class PlayerMovement : MonoBehaviour
     public float slopeRayLength = 2f;
 
     [Header("걷기 소리 설정")]
-    public AudioSource footstepAudio;   // AudioSource 컴포넌트 연결
-    public AudioClip footstepClip;      // 3초짜리 클립 하나 연결
+    public AudioSource footstepAudio;   
+    public AudioClip footstepClip;     
 
     Vector3 velocity;
 
@@ -54,7 +54,6 @@ public class PlayerMovement : MonoBehaviour
             controller.Move(velocity * Time.deltaTime);
         }
 
-        // 걷기 소리: 움직일 때만 재생, 멈추면 즉시 정지
         if (footstepAudio != null)
         {
             if (isMoving && !footstepAudio.isPlaying)
